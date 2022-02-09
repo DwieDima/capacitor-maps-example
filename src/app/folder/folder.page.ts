@@ -78,6 +78,12 @@ export class FolderPage implements OnInit {
         },
       });
       console.log('success');
+      element.onblur = function (ev) {
+        console.log('touch started');
+        CapacitorGoogleMaps.updateMap({
+          mapId: result.googleMap.mapId,
+        });
+      };
     } catch (e) {
       console.log('error', e);
     }
