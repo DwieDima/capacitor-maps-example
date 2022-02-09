@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CapacitorGoogleMaps } from '@capacitor-community/capacitor-googlemaps-native';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
+import { TestPage } from '../test/test.page';
 
 @Component({
   selector: 'app-folder',
@@ -13,14 +14,15 @@ export class FolderPage implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private menuController: MenuController
+    private menuController: MenuController,
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     setTimeout(() => {
       this.initMap();
-    }, 5000);
+    }, 1000);
   }
 
   public async initMap() {
@@ -40,6 +42,19 @@ export class FolderPage implements OnInit {
           x: Math.round(boundingRect.x),
           y: Math.round(boundingRect.y),
         },
+        //@ts-ignore
+        cameraPosition: {
+          target: {
+            latitude: 46.63665,
+            longitude: 14.54722,
+          },
+        },
+        preferences: {
+          //@ts-ignore
+          appearance: {
+            isMyLocationDotShown: true,
+          },
+        },
       });
 
       // remove background, so map can be seen
@@ -48,7 +63,7 @@ export class FolderPage implements OnInit {
       // finally set `data-maps-id` attribute for delegating touch events
       element.setAttribute('data-maps-id', result.googleMap.mapId);
 
-      /*CapacitorGoogleMaps.addMarker({
+      CapacitorGoogleMaps.addMarker({
         mapId: result.googleMap.mapId,
         position: {
           latitude: 46.63665,
@@ -61,7 +76,7 @@ export class FolderPage implements OnInit {
             longitude: 14.54722,
           },
         },
-      });*/
+      });
       console.log('success');
     } catch (e) {
       console.log('error', e);
@@ -74,5 +89,22 @@ export class FolderPage implements OnInit {
 
   public onButtonClick() {
     console.log('click');
+  }
+
+  public async onOpenModal() {
+    const modal = await this.modalController.create({
+      component: TestPage,
+      swipeToClose: true,
+
+      //presentingElement: document.querySelector('ion-router-outlet'),
+      // @ts-ignore
+      breakpoints: [0.25, 0.5, 1],
+      initialBreakpoint: 0.5,
+      backdropDismiss: false,
+      cssClass: 'sheet-modal-example',
+    });
+
+    await this.menuController.close();
+    return modal.present();
   }
 }

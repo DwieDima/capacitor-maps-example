@@ -1,12 +1,17 @@
-<ion-content [fullscreen]="true">
-  <ion-fab vertical="top" horizontal="start" slot="fixed">
+<ion-content [fullscreen]="true" [forceOverscroll]="false">
+  <ion-fab
+    class="ion-padding-top"
+    vertical="top"
+    horizontal="start"
+    slot="fixed"
+  >
     <ion-fab-button (click)="onOpenMenu()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button size="small">
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button size="small" (click)="onOpenModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-button size="small">
